@@ -1,0 +1,6 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+JuliaDB = "a93385a2-3734-596a-9a66-3cfbb77141e6"
+
+[compat]
+Documenter = "~0.21"
