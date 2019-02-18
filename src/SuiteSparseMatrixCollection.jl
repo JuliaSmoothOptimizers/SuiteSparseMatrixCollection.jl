@@ -4,7 +4,7 @@ __precompile__(false)
 using JuliaDB
 using Dates
 
-export fetch_ssmc, matrix_path, ssmc, ssmc_dir
+export fetch_ssmc, matrix_path, ssmc, ssmc_dir, ssmc_formats
 
 const colnames = [
   "id",
