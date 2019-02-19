@@ -100,6 +100,10 @@ function fetch_ssmc(matrices; format="MM")
     mkpath(g_path)
     fname = joinpath(g_path, "$(matrix.name).$(ext)")
     isfile(fname) || download(url, fname)
+    if ext == "tar.gz"
+      run(`tar -zxf $fname -C $g_path`)
+      rm(fname)
+    end
   end
 end
 
