@@ -4,7 +4,7 @@ __precompile__(false)
 using JuliaDB
 using Dates
 
-export fetch_ssmc, matrix_path, ssmc, ssmc_dir, ssmc_formats
+export fetch_ssmc, group_path, matrix_path, ssmc, ssmc_dir, ssmc_formats
 
 const colnames = [
   "id",
@@ -69,14 +69,21 @@ const ssmc_formats = ("MM", "RB", "mat")
 const ssmc_url = "https://sparse.tamu.edu"
 
 """
+    group_path(matrix; format="MM")
+
+Return the path where `matrix`'s group will be or was downloaded.
+"""
+function group_path(matrix; format="MM")
+  format ∈ ssmc_formats || error("unknown format $format")
+  joinpath(ssmc_dir, format, matrix.group)
+end
+
+"""
     matrix_path(matrix; format="MM")
 
 Return the path where `matrix` will be or was downloaded.
 """
-function matrix_path(matrix; format="MM")
-  format ∈ ssmc_formats || error("unknown format $format")
-  joinpath(ssmc_dir, format, matrix.group)
-end
+matrix_path(matrix; format="MM") = joinpath(group_path(matrix; format=format), matrix.name)
 
 """
     fetch_ssmc(matrices; format="MM")
@@ -89,9 +96,9 @@ function fetch_ssmc(matrices; format="MM")
   for matrix in matrices
     ext = format == "mat" ? "mat" : "tar.gz"
     url = "$ssmc_url/$format/$(matrix.group)/$(matrix.name).$(ext)"
-    mtx_path = matrix_path(matrix, format=format)
-    mkpath(mtx_path)
-    fname = joinpath(mtx_path, "$(matrix.name).$(ext)")
+    g_path = group_path(matrix, format=format)
+    mkpath(g_path)
+    fname = joinpath(g_path, "$(matrix.name).$(ext)")
     isfile(fname) || download(url, fname)
   end
 end
