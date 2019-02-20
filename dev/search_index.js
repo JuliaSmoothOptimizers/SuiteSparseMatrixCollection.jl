@@ -81,6 +81,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api/#SuiteSparseMatrixCollection.group_path",
+    "page": "API",
+    "title": "SuiteSparseMatrixCollection.group_path",
+    "category": "function",
+    "text": "group_path(matrix; format=\"MM\")\n\nReturn the path where matrix\'s group will be or was downloaded.\n\n\n\n\n\n"
+},
+
+{
     "location": "api/#SuiteSparseMatrixCollection.matrix_path",
     "page": "API",
     "title": "SuiteSparseMatrixCollection.matrix_path",
@@ -101,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Utilities",
     "category": "section",
-    "text": "matrix_path\nfetch_ssmc"
+    "text": "group_path\nmatrix_path\nfetch_ssmc"
 },
 
 {
