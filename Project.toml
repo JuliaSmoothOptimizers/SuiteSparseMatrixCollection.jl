@@ -1,0 +1,13 @@
+name = "SuiteSparseMatrixCollection"
+uuid = "ac199af8-68bc-55b8-82c4-7abd6f96ed98"
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JuliaDB = "a93385a2-3734-596a-9a66-3cfbb77141e6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
