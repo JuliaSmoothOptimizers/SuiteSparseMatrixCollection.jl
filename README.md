@@ -11,8 +11,8 @@ A straightforward interface to the [SuiteSparse Matrix Collection](https://spars
 ## How to install
 
 ```julia
-julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl")
-julia> Pkg.test("SuiteSparseMatrixCollection")
+pkg> add SuiteSparseMatrixCollection
+pkg> test SuiteSparseMatrixCollection
 ```
 
 ## Example
