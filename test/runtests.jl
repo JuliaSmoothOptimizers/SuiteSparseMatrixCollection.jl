@@ -22,4 +22,33 @@ function test_fetch()
   end
 end
 
+function test_select()
+  bcsstk = ssmc_matrices("", "bcsstk")
+  @test length(bcsstk) == 39
+
+  bcsstk_small = filter(p -> p.rows ≤ 100, bcsstk)
+  @test length(bcsstk_small) == 2
+
+  hb_bcsstk = ssmc_matrices("HB", "bcsstk")
+  @test length(hb_bcsstk) == 33
+
+  hb_matrices = ssmc_matrices("HB", "")
+  @test length(hb_matrices) == 292
+end
+
+function test_fetch_by_name()
+  arenas = ssmc_matrices("Arenas", "")
+  @test length(arenas) == 4
+  fetch_ssmc("Arenas", "")
+  for matrix in arenas
+    g_path = group_path(matrix)
+    @test isdir(g_path)
+    mtx_path = matrix_path(matrix)
+    @test isdir(mtx_path)
+    @test isfile(joinpath(mtx_path, "$(matrix.name).mtx"))
+  end
+end
+
 test_fetch()
+test_select()
+test_fetch_by_name()
