@@ -3,11 +3,11 @@ using SuiteSparseMatrixCollection
 using Test
 
 function test_fetch()
-  two_posdef = filter(p -> p.structure == "symmetric" && p.posDef == "yes" && p.type == "real" && p.rows ≤ 20, ssmc)
-  @test length(two_posdef) == 2
+  two_square = filter(p -> p.structure == "symmetric" && p.posDef == "no" && p.type == "real" && p.rows ≤ 100, ssmc)
+  @test length(two_square) == 2
   for format in SuiteSparseMatrixCollection.ssmc_formats
-    fetch_ssmc(two_posdef, format=format)
-    for matrix in two_posdef
+    fetch_ssmc(two_square, format=format)
+    for matrix in two_square
       g_path = group_path(matrix, format=format)
       @test isdir(g_path)
       mtx_path = matrix_path(matrix, format=format)
