@@ -25,7 +25,7 @@ julia> ssmc_matrices("", "bcsstk")    # all matrices whose name contains "bcsstk
 julia> ssmc_matrices("HB", "")        # all matrices whose group contains "HB"
 
 julia> # select symmetric positive definite matrices with ≤ 100 rows and columns
-julia> tiny = filter(p -> p.structure == "symmetric" && p.posDef == "yes" && p.type == "real" && p.rows ≤ 100, ssmc)
+julia> tiny = ssmc[(ssmc.structure .== "symmetric") .& (ssmc.posDef .== "yes") .& (ssmc.type .== "real") .& (ssmc.rows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
 julia> fetch_ssmc(tiny, format="MM")
@@ -41,24 +41,23 @@ Matrices are available in formats:
 * `"mat"`: Matlab's [MAT-file format](https://www.mathworks.com/help/pdf_doc/matlab/matfile_format.pdf);
 * `"MM"`: the [MatrixMarket format](http://math.nist.gov/MatrixMarket/formats.html#MMformat).
 
-If `JuliaDB` is explicitly installed, it is possible to further examine a list of selected matrices:
+Use `DataFrames` syntax to further examine a list of selected matrices:
 ```julia
-julia> using JuliaDB
-
-julia> select(tiny, (:name, :rows, :cols, :posDef, :kind))
-Table with 10 rows, 5 columns:
-name        rows  cols  posDef  kind
-──────────────────────────────────────────────────────────────────────
-"bcsstk01"  48    48    "yes"   "structural problem"
-"bcsstk02"  66    66    "yes"   "structural problem"
-"bcsstm02"  66    66    "yes"   "structural problem"
-"nos4"      100   100   "yes"   "structural problem"
-"ex5"       27    27    "yes"   "computational fluid dynamics problem"
-"mesh1e1"   48    48    "yes"   "structural problem"
-"mesh1em1"  48    48    "yes"   "structural problem"
-"mesh1em6"  48    48    "yes"   "structural problem"
-"LF10"      18    18    "yes"   "model reduction problem"
-"LFAT5"     14    14    "yes"   "model reduction problem"
+julia> tiny[!, [:name, :rows, :cols, :posDef, :kind])
+10×5 DataFrames.DataFrame
+│ Row │ name     │ rows  │ cols  │ posDef │ kind                                 │
+│     │ String   │ Int64 │ Int64 │ String │ String                               │
+├─────┼──────────┼───────┼───────┼────────┼──────────────────────────────────────┤
+│ 1   │ bcsstk01 │ 48    │ 48    │ yes    │ structural problem                   │
+│ 2   │ bcsstk02 │ 66    │ 66    │ yes    │ structural problem                   │
+│ 3   │ bcsstm02 │ 66    │ 66    │ yes    │ structural problem                   │
+│ 4   │ nos4     │ 100   │ 100   │ yes    │ structural problem                   │
+│ 5   │ ex5      │ 27    │ 27    │ yes    │ computational fluid dynamics problem │
+│ 6   │ mesh1e1  │ 48    │ 48    │ yes    │ structural problem                   │
+│ 7   │ mesh1em1 │ 48    │ 48    │ yes    │ structural problem                   │
+│ 8   │ mesh1em6 │ 48    │ 48    │ yes    │ structural problem                   │
+│ 9   │ LF10     │ 18    │ 18    │ yes    │ model reduction problem              │
+│ 10  │ LFAT5    │ 14    │ 14    │ yes    │ model reduction problem              │
 ```
 
 Matrices in Rutherford-Boeing format can be opened with [`HarwellRutherfordBoeing.jl`](https://github.com/JuliaSparse/HarwellRutherfordBoeing.jl):

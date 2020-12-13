@@ -1,10 +1,14 @@
 module SuiteSparseMatrixCollection
 __precompile__(false)
 
-using JuliaDB
+using CSV
+using DataFrames
 using Dates
 
-export fetch_ssmc, ssmc_matrices, group_path, matrix_path, ssmc, ssmc_dir, ssmc_formats
+export fetch_ssmc, ssmc_matrices, group_paths, matrix_paths, ssmc, ssmc_dir, ssmc_formats
+
+Base.@deprecate group_path group_paths
+Base.@deprecate matrix_path matrix_paths
 
 const colnames = [
   "id",
@@ -57,8 +61,13 @@ const colparsers = [
 ]
 
 "Main SuiteSparseMatrixCollection database."
-const ssmc = loadtable(joinpath(@__DIR__, "SSMCdata.dat"), delim='`', header_exists=false,
-                       colnames=colnames, colparsers=colparsers, nastrings=["unknown"])
+const ssmc = CSV.File(joinpath(@__DIR__, "SSMCdata.dat"),
+                      delim='`',
+                      header=colnames,
+                      types=colparsers,
+                      ignoreemptylines=false,
+                      missingstrings=["", "unknown"],
+                     ) |> DataFrame
 
 "Folder where matrices are stored."
 const ssmc_dir = joinpath(@__DIR__, "..", "data")
@@ -69,27 +78,29 @@ const ssmc_formats = ("MM", "RB", "mat")
 const ssmc_url = "https://sparse.tamu.edu"
 
 """
-    group_path(matrix; format="MM")
+    group_paths(matrices; format="MM")
 
-Return the path where `matrix`'s group will be or was downloaded.
+Return the array of paths where `matrices`'s groups will be or were downloaded.
 """
-function group_path(matrix; format="MM")
+function group_paths(matrices; format="MM")
   format ∈ ssmc_formats || error("unknown format $format")
-  joinpath(ssmc_dir, format, matrix.group)
+  joinpath.(ssmc_dir, format, matrices.group)
 end
 
 """
-    matrix_path(matrix; format="MM")
+    matrix_paths(matrices; format="MM")
 
-Return the path where `matrix` will be or was downloaded.
+The argument `matrices` should be a `DataFrame` or `DataFrameRow`.
+Return the array of paths where each matrix in `matrices` will be or was downloaded.
 """
-matrix_path(matrix; format="MM") = joinpath(group_path(matrix; format=format), matrix.name)
+matrix_paths(matrices; format="MM") = joinpath.(group_paths(matrices; format=format), matrices.name)
 
 """
     fetch_ssmc(matrices; format="MM")
 
-If `matrices` is iterable, download matrices from the SuiteSparseMatrixCollection.
-Each matrix will be stored in `matrix_path(matrix; format=format)`.
+Download matrices from the SuiteSparseMatrixCollection.
+The argument `matrices` should be a `DataFrame` or `DataFrameRow`.
+Each matrix will be stored in `matrix_paths(matrix; format=format)`.
 
     fetch_ssmc(name; format="MM")
 
@@ -103,10 +114,10 @@ If `group` and `name` are strings, select matrices whose group and name contain 
 """
 function fetch_ssmc(matrices; format="MM")
   format ∈ ssmc_formats || error("unknown format $format")
-  for matrix in matrices
+  g_paths = group_paths(matrices, format=format)
+  for (matrix, g_path) in zip(eachrow(matrices), g_paths)
     ext = format == "mat" ? "mat" : "tar.gz"
     url = "$ssmc_url/$format/$(matrix.group)/$(matrix.name).$(ext)"
-    g_path = group_path(matrix, format=format)
     mkpath(g_path)
     fname = joinpath(g_path, "$(matrix.name).$(ext)")
     if !isfile(fname)
@@ -120,6 +131,8 @@ function fetch_ssmc(matrices; format="MM")
     end
   end
 end
+
+fetch_smmc(matrix::AbstractString; kwargs...) = fetch_ssmc("", matrix; kwargs...)
 
 function fetch_ssmc(group::AbstractString, name::AbstractString; kwargs...)
   matrices = ssmc_matrices(group, name)
@@ -144,7 +157,7 @@ Return an iterable of matrices whose group contains the string `group`.
 Example: `ssmc_matrices("HB", "bcsstk")`.
 """
 function ssmc_matrices(group::AbstractString, name::AbstractString)
-  filter(p -> occursin(group, p.group) && occursin(name, p.name), ssmc)
+  ssmc[occursin.(group, ssmc.group) .& occursin.(name, ssmc.name), :]
 end
 
 end

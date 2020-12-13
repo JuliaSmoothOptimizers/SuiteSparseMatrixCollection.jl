@@ -15,8 +15,8 @@ ssmc_formats
 ## Utilities
 
 ```@docs
-group_path
-matrix_path
+group_paths
+matrix_paths
 ssmc_matrices
 fetch_ssmc
 ```
