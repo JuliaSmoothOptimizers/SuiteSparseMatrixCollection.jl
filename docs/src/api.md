@@ -17,5 +17,6 @@ ssmc_formats
 ```@docs
 group_path
 matrix_path
+ssmc_matrices
 fetch_ssmc
 ```
