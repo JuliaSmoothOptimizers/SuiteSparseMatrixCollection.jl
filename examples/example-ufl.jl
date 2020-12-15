@@ -1,18 +1,12 @@
 using SuiteSparseMatrixCollection
 
 # real rectangular matrices
-# probs = filter(p -> 100 ≤ p.rows ≤ 1000 && 100 ≤ p.cols ≤ 1000 && p.structure == "rectangular" && p.type == "real", ufl)
+rect = ssmc[(100 .≤ ssmc.nrows .≤ 1000) .& (100 .≤ ssmc.ncols .≤ 1000) .& (ssmc.nrows .!= ssmc.ncols) .& (ssmc.real .== true), :]
 
 # all symmetric positive definite matrices
-ufl_posdef = filter(p -> p.structure == "symmetric" && p.posDef == "yes" && p.type == "real", ssmc)
+posdef = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite .== true) .& (ssmc.real .== true), :]
 
 # small symmetric positive definite matrices
-ufl_posdef_small = filter(p -> p.structure == "symmetric" && p.posDef == "yes" && p.type == "real" && p.rows ≤ 2_000, ssmc)
+posdef_small = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite .== true) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 200), :]
 
-# tiny symmetric positive definite matrices
-ufl_posdef_tiny = filter(p -> p.structure == "symmetric" && p.posDef == "yes" && p.type == "real" && p.rows ≤ 100, ssmc)
-
-format = "MM"  # MatrixMarket
-# format = "RB"  # RutherfordBoeing
-
-fetch_ssmc(ufl_posdef_tiny, format=format)
+fetch_ssmc(posdef_small, format="MM")

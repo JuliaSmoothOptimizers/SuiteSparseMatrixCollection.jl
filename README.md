@@ -14,7 +14,11 @@ pkg> add SuiteSparseMatrixCollection
 pkg> test SuiteSparseMatrixCollection
 ```
 
-## Example
+## Updating the database
+
+Clone this repository, activate the `utils` environment and run `gen_db.jl` to check if the database needs to be updated.
+
+## Examples
 
 ```julia
 julia> using SuiteSparseMatrixCollection  # the database is named ssmc
@@ -25,14 +29,12 @@ julia> ssmc_matrices("", "bcsstk")    # all matrices whose name contains "bcsstk
 julia> ssmc_matrices("HB", "")        # all matrices whose group contains "HB"
 
 julia> # select symmetric positive definite matrices with ≤ 100 rows and columns
-julia> tiny = ssmc[(ssmc.structure .== "symmetric") .& (ssmc.posDef .== "yes") .& (ssmc.type .== "real") .& (ssmc.rows .≤ 100), :]
+julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
 julia> fetch_ssmc(tiny, format="MM")
 
-julia> for matrix in tiny
-         println(matrix_path(matrix, format="MM"))  # matrices are stored here
-       end
+julia> matrix_paths(matrix, format="MM"))  # matrices are downloaded here
 ```
 
 Matrices are available in formats:
@@ -43,21 +45,23 @@ Matrices are available in formats:
 
 Use `DataFrames` syntax to further examine a list of selected matrices:
 ```julia
-julia> tiny[!, [:name, :rows, :cols, :posDef, :kind])
-10×5 DataFrames.DataFrame
-│ Row │ name     │ rows  │ cols  │ posDef │ kind                                 │
-│     │ String   │ Int64 │ Int64 │ String │ String                               │
-├─────┼──────────┼───────┼───────┼────────┼──────────────────────────────────────┤
-│ 1   │ bcsstk01 │ 48    │ 48    │ yes    │ structural problem                   │
-│ 2   │ bcsstk02 │ 66    │ 66    │ yes    │ structural problem                   │
-│ 3   │ bcsstm02 │ 66    │ 66    │ yes    │ structural problem                   │
-│ 4   │ nos4     │ 100   │ 100   │ yes    │ structural problem                   │
-│ 5   │ ex5      │ 27    │ 27    │ yes    │ computational fluid dynamics problem │
-│ 6   │ mesh1e1  │ 48    │ 48    │ yes    │ structural problem                   │
-│ 7   │ mesh1em1 │ 48    │ 48    │ yes    │ structural problem                   │
-│ 8   │ mesh1em6 │ 48    │ 48    │ yes    │ structural problem                   │
-│ 9   │ LF10     │ 18    │ 18    │ yes    │ model reduction problem              │
-│ 10  │ LFAT5    │ 14    │ 14    │ yes    │ model reduction problem              │
+julia> tiny[!, [:name, :nrows, :ncols, :positive_definite, :lower_bandwidth]]
+12×5 DataFrame
+│ Row │ name          │ nrows │ ncols │ positive_definite │ lower_bandwidth │
+│     │ String        │ Int64 │ Int64 │ Bool              │ Int64           │
+├─────┼───────────────┼───────┼───────┼───────────────────┼─────────────────┤
+│ 1   │ bcsstk01      │ 48    │ 48    │ 1                 │ 35              │
+│ 2   │ bcsstk02      │ 66    │ 66    │ 1                 │ 65              │
+│ 3   │ bcsstm02      │ 66    │ 66    │ 1                 │ 0               │
+│ 4   │ nos4          │ 100   │ 100   │ 1                 │ 13              │
+│ 5   │ ex5           │ 27    │ 27    │ 1                 │ 20              │
+│ 6   │ mesh1e1       │ 48    │ 48    │ 1                 │ 47              │
+│ 7   │ mesh1em1      │ 48    │ 48    │ 1                 │ 47              │
+│ 8   │ mesh1em6      │ 48    │ 48    │ 1                 │ 47              │
+│ 9   │ LF10          │ 18    │ 18    │ 1                 │ 3               │
+│ 10  │ LFAT5         │ 14    │ 14    │ 1                 │ 5               │
+│ 11  │ Trefethen_20b │ 19    │ 19    │ 1                 │ 16              │
+│ 12  │ Trefethen_20  │ 20    │ 20    │ 1                 │ 16              │
 ```
 
 Matrices in Rutherford-Boeing format can be opened with [`HarwellRutherfordBoeing.jl`](https://github.com/JuliaSparse/HarwellRutherfordBoeing.jl):
@@ -66,11 +70,16 @@ pkg> add HarwellRutherfordBoeing
 
 julia> using HarwellRutherfordBoeing
 
-julia> matrix = filter(p -> p.name == "bcsstk01", tiny)[1]
-(id = 23, group = "HB", name = "bcsstk01", rows = 48, cols = 48, nonzeros = 400, structuralFullRankQ = "yes", structuralRank = "48", blocks = "1", comps = 1, explicitZeros = 0, nonzeroPatternSym = "symmetric", numericalSym = "symmetric", type = "real", structure = "symmetric", CholeskyCandidate = "yes", posDef = "yes", author = "J. Lewis", editor = "I. Duff, R. Grimes, J. Lewis", date = 1982-01-01, kind = "structural problem", notes = "")
+julia> matrix = ssmc[ssmc.name .== "bcsstk01", :]
+1×30 DataFrame. Omitted printing of 17 columns
+│ Row │ group  │ nnzdiag │ nrows │ numerical_symmetry │ amd_vnz │ binary │ structural_rank │ is_nd │ is_graph │ RB_type │ lower_bandwidth │ explicit_zeros │ amd_flops │
+│     │ String │ Int64   │ Int64 │ Float64            │ Int64   │ Bool   │ Int64           │ Bool  │ Bool     │ String  │ Int64           │ Int64          │ Float64   │
+├─────┼────────┼─────────┼───────┼────────────────────┼─────────┼────────┼─────────────────┼───────┼──────────┼─────────┼─────────────────┼────────────────┼───────────┤
+│ 1   │ HB     │ 48      │ 48    │ 1.0                │ 651     │ 0      │ 48              │ 1     │ 0        │ rsa     │ 35              │ 0              │ 6009.0    │
 
-julia> mtx_path = matrix_path(matrix, format="RB")
-"/Users/dpo/dev/julia/JSO/SuiteSparseMatrixCollection.jl/src/../data/RB/HB/bcsstk01"
+julia> matrix_paths(matrix, format="RB")
+1-element Array{String,1}:
+ "/Users/dpo/dev/JSO/SuiteSparseMatrixCollection.jl/src/../data/RB/HB/bcsstk01"
 
 julia> A = RutherfordBoeingData(joinpath(mtx_path, "$(matrix.name).rb"))
 Rutherford-Boeing data 23 of type rsa
