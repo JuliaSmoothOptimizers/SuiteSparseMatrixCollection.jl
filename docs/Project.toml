@@ -1,9 +1,9 @@
-[deps]
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+[deps]CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 
 [compat]
-CSV = "0.8"
 DataFrames = "^0.21"
 Documenter = "~0.25"
+JLD2 = "0.3"

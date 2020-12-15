@@ -3,14 +3,14 @@ using SuiteSparseMatrixCollection
 using Test
 
 function test_fetch()
-  two_square = filter(p -> p.structure == "symmetric" && p.posDef == "no" && p.type == "real" && p.rows ≤ 100, ssmc)
-  @test size(two_square, 1) == 2
+  three_square = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite .== false) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 10), :]
+  @test size(three_square, 1) == 3
   for format in SuiteSparseMatrixCollection.ssmc_formats
     Sys.iswindows() && format != "mat" && continue
-    fetch_ssmc(two_square, format=format)
-    g_paths = group_paths(two_square, format=format)
-    mtx_paths = matrix_paths(two_square, format=format)
-    for (matrix, g_path, mtx_path) in zip(eachrow(two_square), g_paths, mtx_paths)
+    fetch_ssmc(three_square, format=format)
+    g_paths = group_paths(three_square, format=format)
+    mtx_paths = matrix_paths(three_square, format=format)
+    for (matrix, g_path, mtx_path) in zip(eachrow(three_square), g_paths, mtx_paths)
       @test isdir(g_path)
       ext = format == "mat" ? "mat" : (format == "MM" ? "mtx" : "rb")
       if ext == "mat"
@@ -25,9 +25,9 @@ end
 
 function test_select()
   bcsstk = ssmc_matrices("", "bcsstk")
-  @test size(bcsstk, 1) == 39
+  @test size(bcsstk, 1) == 40
 
-  bcsstk_small = bcsstk[bcsstk.rows .≤ 100, :]
+  bcsstk_small = bcsstk[bcsstk.nrows .≤ 100, :]
   @test size(bcsstk_small, 1) == 2
 
   hb_bcsstk = ssmc_matrices("HB", "bcsstk")
