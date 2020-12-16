@@ -1,11 +1,16 @@
 # SuiteSparseMatrixCollection.jl
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4324340.svg)](https://doi.org/10.5281/zenodo.4324340)
 [![CI](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/workflows/CI/badge.svg?branch=master)](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/actions)
 [![Build Status](https://api.cirrus-ci.com/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl.svg)](https://cirrus-ci.com/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl)
 [![documentation](https://img.shields.io/badge/docs-latest-3f51b5.svg)](https://JuliaSmoothOptimizers.github.io/SuiteSparseMatrixCollection.jl/latest)
 [![codecov](https://codecov.io/gh/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/SuiteSparseMatrixCollection.jl)
 
 A straightforward interface to the [SuiteSparse Matrix Collection](https://sparse.tamu.edu/).
+
+## How to Cite
+
+If you use SuiteSparseMatrixCollection.jl in your work, please cite using the format given in [CITATION.bib](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/blob/master/CITATION.bib).
 
 ## How to install
 
