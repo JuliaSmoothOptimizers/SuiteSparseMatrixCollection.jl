@@ -20,10 +20,11 @@ julia> ssmc_matrices("", "bcsstk")    # all matrices whose name contains "bcsstk
 julia> ssmc_matrices("HB", "")        # all matrices whose group contains "HB"
 
 julia> # select symmetric positive definite matrices with ≤ 100 rows and columns
-julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
+julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .&
+                   (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
 julia> fetch_ssmc(tiny, format="MM")
 
-julia> matrix_paths(matrix, format="MM"))  # matrices are downloaded here
+julia> matrix_paths(tiny, format="MM")  # matrices are downloaded here
 ```

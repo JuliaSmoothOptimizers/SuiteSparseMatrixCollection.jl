@@ -34,7 +34,8 @@ julia> ssmc_matrices("", "bcsstk")    # all matrices whose name contains "bcsstk
 julia> ssmc_matrices("HB", "")        # all matrices whose group contains "HB"
 
 julia> # select symmetric positive definite matrices with ≤ 100 rows and columns
-julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
+julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .&
+                   (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
 julia> fetch_ssmc(tiny, format="MM")
@@ -75,18 +76,18 @@ pkg> add HarwellRutherfordBoeing
 
 julia> using HarwellRutherfordBoeing
 
-julia> matrices = ssmc[ssmc.name .== "bcsstk01", :]
+julia> matrix = ssmc[ssmc.name .== "bcsstk01", :]
 1×30 DataFrame. Omitted printing of 17 columns
 │ Row │ group  │ nnzdiag │ nrows │ numerical_symmetry │ amd_vnz │ binary │ structural_rank │ is_nd │ is_graph │ RB_type │ lower_bandwidth │ explicit_zeros │ amd_flops │
 │     │ String │ Int64   │ Int64 │ Float64            │ Int64   │ Bool   │ Int64           │ Bool  │ Bool     │ String  │ Int64           │ Int64          │ Float64   │
 ├─────┼────────┼─────────┼───────┼────────────────────┼─────────┼────────┼─────────────────┼───────┼──────────┼─────────┼─────────────────┼────────────────┼───────────┤
 │ 1   │ HB     │ 48      │ 48    │ 1.0                │ 651     │ 0      │ 48              │ 1     │ 0        │ rsa     │ 35              │ 0              │ 6009.0    │
 
-julia> paths = matrix_paths(matrices, format="RB")
+julia> path = matrix_paths(matrix, format="RB")
 1-element Array{String,1}:
  "/Users/dpo/dev/JSO/SuiteSparseMatrixCollection.jl/src/../data/RB/HB/bcsstk01"
 
-julia> A = RutherfordBoeingData(joinpath(paths[1], "$(matrices.name[1]).rb"))
+julia> A = RutherfordBoeingData(joinpath(path[1], "$(matrix.name[1]).rb"))
 Rutherford-Boeing data 23 of type rsa
 48 rows, 48 cols, 224 nonzeros
 ```
