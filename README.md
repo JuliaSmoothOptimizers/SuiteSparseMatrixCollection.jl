@@ -39,7 +39,7 @@ julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.==
 julia> # fetch the matrices selects in MatrixMarket format
 julia> fetch_ssmc(tiny, format="MM")
 
-julia> matrix_paths(matrix, format="MM"))  # matrices are downloaded here
+julia> matrix_paths(tiny, format="MM")  # matrices are downloaded here
 ```
 
 Matrices are available in formats:
@@ -75,18 +75,18 @@ pkg> add HarwellRutherfordBoeing
 
 julia> using HarwellRutherfordBoeing
 
-julia> matrix = ssmc[ssmc.name .== "bcsstk01", :]
+julia> matrices = ssmc[ssmc.name .== "bcsstk01", :]
 1×30 DataFrame. Omitted printing of 17 columns
 │ Row │ group  │ nnzdiag │ nrows │ numerical_symmetry │ amd_vnz │ binary │ structural_rank │ is_nd │ is_graph │ RB_type │ lower_bandwidth │ explicit_zeros │ amd_flops │
 │     │ String │ Int64   │ Int64 │ Float64            │ Int64   │ Bool   │ Int64           │ Bool  │ Bool     │ String  │ Int64           │ Int64          │ Float64   │
 ├─────┼────────┼─────────┼───────┼────────────────────┼─────────┼────────┼─────────────────┼───────┼──────────┼─────────┼─────────────────┼────────────────┼───────────┤
 │ 1   │ HB     │ 48      │ 48    │ 1.0                │ 651     │ 0      │ 48              │ 1     │ 0        │ rsa     │ 35              │ 0              │ 6009.0    │
 
-julia> matrix_paths(matrix, format="RB")
+julia> paths = matrix_paths(matrices, format="RB")
 1-element Array{String,1}:
  "/Users/dpo/dev/JSO/SuiteSparseMatrixCollection.jl/src/../data/RB/HB/bcsstk01"
 
-julia> A = RutherfordBoeingData(joinpath(mtx_path, "$(matrix.name).rb"))
+julia> A = RutherfordBoeingData(joinpath(paths[1], "$(matrices.name[1]).rb"))
 Rutherford-Boeing data 23 of type rsa
 48 rows, 48 cols, 224 nonzeros
 ```

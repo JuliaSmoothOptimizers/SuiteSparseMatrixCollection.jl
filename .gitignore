@@ -1,5 +1,5 @@
 test/example/latex_example.*
 test/example/profile*
-
+data/*
 docs/build
 docs/Manifest.toml
