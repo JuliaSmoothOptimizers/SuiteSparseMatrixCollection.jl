@@ -77,8 +77,7 @@ function fetch_ssmc(matrices; format="MM")
       download(url, fname)
     end
     if ext == "tar.gz"
-      tar_options = Sys.iswindows() ? "--force-local" : ""
-      run(`tar $tar_options -zxf $fname -C $g_path`)
+      run(`tar -zxf $fname -C $g_path`)
       rm(fname)
     end
   end
