@@ -83,7 +83,7 @@ function fetch_ssmc(matrices; format="MM")
   end
 end
 
-fetch_smmc(matrix::AbstractString; kwargs...) = fetch_ssmc("", matrix; kwargs...)
+fetch_ssmc(name::AbstractString; kwargs...) = fetch_ssmc("", name; kwargs...)
 
 function fetch_ssmc(group::AbstractString, name::AbstractString; kwargs...)
   matrices = ssmc_matrices(group, name)
