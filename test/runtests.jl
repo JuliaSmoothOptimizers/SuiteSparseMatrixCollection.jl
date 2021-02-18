@@ -24,7 +24,7 @@ function test_fetch()
 end
 
 function test_select()
-  bcsstk = ssmc_matrices("", "bcsstk")
+  bcsstk = ssmc_matrices("bcsstk")
   @test size(bcsstk, 1) == 40
 
   bcsstk_small = bcsstk[bcsstk.nrows .≤ 100, :]
