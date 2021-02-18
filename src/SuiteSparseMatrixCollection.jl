@@ -94,21 +94,24 @@ end
 """
     ssmc_matrices(group, name)
 
-Return an iterable of matrices whose group contains the string `group` and whose
+Return a `DataFrame` of matrices whose group contains the string `group` and whose
 name contains the string `name`.
 
+    ssma_matrices(name)
     ssmc_matrices("", name)
 
-Return an iterable of matrices whose name contains the string `name`.
+Return a `DataFrame` of matrices whose name contains the string `name`.
 
     ssmc_matrices(group, "")
 
-Return an iterable of matrices whose group contains the string `group`.
+Return a `DataFrame` of matrices whose group contains the string `group`.
 
 Example: `ssmc_matrices("HB", "bcsstk")`.
 """
 function ssmc_matrices(group::AbstractString, name::AbstractString)
   ssmc[occursin.(group, ssmc.group) .& occursin.(name, ssmc.name), :]
 end
+
+ssmc_matrices(name::AbstractString) = ssmc_matrices("", name)
 
 end
