@@ -1,24 +1,18 @@
 module SuiteSparseMatrixCollection
 
+using Pkg.Artifacts
+
 using DataFrames
 using JLD2
 
-export fetch_ssmc, ssmc_matrices, group_paths, matrix_paths, ssmc, ssmc_dir, ssmc_formats
-
-Base.@deprecate group_path group_paths
-Base.@deprecate matrix_path matrix_paths
+export fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats
 
 const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
-const ssmc_url = "https://sparse.tamu.edu"
-
-"Folder where matrices are stored."
-const ssmc_dir = joinpath(@__DIR__, "..", "data")
 
 "Main database."
 global ssmc
 
 function __init__()
-  isdir(ssmc_dir) || mkdir(ssmc_dir)
   file = jldopen(ssmc_jld2, "r")
   global ssmc = file["df"]
   last_rev_date = file["last_rev_date"]
@@ -27,68 +21,36 @@ function __init__()
 end
 
 "Formats in which matrices are available."
-const ssmc_formats = ("MM", "RB", "mat")
+const ssmc_formats = ("MM", "RB")
 
 """
-    group_paths(matrices; format="MM")
+     fetch_ssmc(group::AbstractString, name::AbstractString; format="MM")
 
-Return the array of paths where `matrices`'s groups will be or were downloaded.
+Download the matrix with name `name` in group `group`.
+Return the path where the matrix is stored.
 """
-function group_paths(matrices; format="MM")
-  format ∈ ssmc_formats || error("unknown format $format")
-  joinpath.(ssmc_dir, format, matrices.group)
+function fetch_ssmc(group::AbstractString, name::AbstractString; format="MM")
+  group_and_name = group * "/" * name * "." * format
+  # download lazy artifact if not already done and obtain path
+  loc = ensure_artifact_installed(group_and_name,
+                                  joinpath(@__DIR__, "..", "Artifacts.toml"))
+  return joinpath(loc, name)
 end
 
 """
-    matrix_paths(matrices; format="MM")
-
-The argument `matrices` should be a `DataFrame` or `DataFrameRow`.
-Return the array of paths where each matrix in `matrices` will be or was downloaded.
-"""
-matrix_paths(matrices; format="MM") = joinpath.(group_paths(matrices; format=format), matrices.name)
-
-"""
-    fetch_ssmc(matrices; format="MM")
+     fetch_ssmc(matrices; format="MM")
 
 Download matrices from the SuiteSparseMatrixCollection.
 The argument `matrices` should be a `DataFrame` or `DataFrameRow`.
-Each matrix will be stored in `matrix_paths(matrix; format=format)`.
-
-    fetch_ssmc(name; format="MM")
-
-If `name` is a string, select matrices whose name contain the string
-`name` in the collection, and download them.
-
-    fetch_ssmc(group, name; format="MM")
-
-If `group` and `name` are strings, select matrices whose group and name contain the strings
-`group` and `name`, respectively, in the collection, and download them.
+An array of strings is returned with the paths where the matrices are stored.
 """
 function fetch_ssmc(matrices; format="MM")
   format ∈ ssmc_formats || error("unknown format $format")
-  g_paths = group_paths(matrices, format=format)
-  for (matrix, g_path) in zip(eachrow(matrices), g_paths)
-    ext = format == "mat" ? "mat" : "tar.gz"
-    url = "$ssmc_url/$format/$(matrix.group)/$(matrix.name).$(ext)"
-    mkpath(g_path)
-    fname = joinpath(g_path, "$(matrix.name).$(ext)")
-    if !isfile(fname)
-      @info "downloading $fname"
-      download(url, fname)
-    end
-    if ext == "tar.gz"
-      run(`tar -zxf $fname -C $g_path`)
-      rm(fname)
-    end
+  paths = String[]
+  for (group, name) ∈ zip(matrices.group, matrices.name)
+    push!(paths, fetch_ssmc(group, name, format=format))
   end
-end
-
-fetch_ssmc(name::AbstractString; kwargs...) = fetch_ssmc("", name; kwargs...)
-
-function fetch_ssmc(group::AbstractString, name::AbstractString; kwargs...)
-  matrices = ssmc_matrices(group, name)
-  fetch_ssmc(matrices; kwargs...)
-  return matrices
+  return paths
 end
 
 """
@@ -97,7 +59,7 @@ end
 Return a `DataFrame` of matrices whose group contains the string `group` and whose
 name contains the string `name`.
 
-    ssma_matrices(name)
+    ssmc_matrices(name)
     ssmc_matrices("", name)
 
 Return a `DataFrame` of matrices whose name contains the string `name`.

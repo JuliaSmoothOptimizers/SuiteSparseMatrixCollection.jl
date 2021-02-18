@@ -24,7 +24,5 @@ julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.==
                    (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
-julia> fetch_ssmc(tiny, format="MM")
-
-julia> matrix_paths(tiny, format="MM")  # matrices are downloaded here
+julia> paths fetch_ssmc(tiny, format="MM")  # matrices are downloaded in paths
 ```
