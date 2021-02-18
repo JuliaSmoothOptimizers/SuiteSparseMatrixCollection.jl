@@ -23,10 +23,14 @@ pkg> test SuiteSparseMatrixCollection
 
 Clone this repository, activate the `utils` environment and run `gen_db.jl` to check if the database needs to be updated.
 
+## Updating `Artifacts.toml`
+
+Clone this repository, activate the `utils` environment and run `gen_artifacts.jl` to check if `Artifacts.toml` needs to be updated.
+
 ## Examples
 
 ```julia
-julia> using SuiteSparseMatrixCollection  # the database is named ssmc
+julia> using SuiteSparseMatrixCollection
 
 julia> # name-based selection can be done with `ssmc_matrices()`
 julia> ssmc_matrices("HB", "bcsstk")  # all matrices whose group contains "HB" and name contains "bcsstk"
@@ -38,15 +42,12 @@ julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.==
                    (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
-julia> fetch_ssmc(tiny, format="MM")
-
-julia> matrix_paths(tiny, format="MM")  # matrices are downloaded here
+julia> paths = fetch_ssmc(tiny, format="MM")  # matrices are downloaded in paths
 ```
 
 Matrices are available in formats:
 
 * `"RB"`: the [Rutherford-Boeing format](https://www.cise.ufl.edu/research/sparse/matrices/DOC/rb.pdf);
-* `"mat"`: Matlab's [MAT-file format](https://www.mathworks.com/help/pdf_doc/matlab/matfile_format.pdf);
 * `"MM"`: the [MatrixMarket format](http://math.nist.gov/MatrixMarket/formats.html#MMformat).
 
 Use `DataFrames` syntax to further examine a list of selected matrices:
@@ -83,7 +84,7 @@ julia> matrix = ssmc[ssmc.name .== "bcsstk01", :]
 ├─────┼────────┼─────────┼───────┼────────────────────┼─────────┼────────┼─────────────────┼───────┼──────────┼─────────┼─────────────────┼────────────────┼───────────┤
 │ 1   │ HB     │ 48      │ 48    │ 1.0                │ 651     │ 0      │ 48              │ 1     │ 0        │ rsa     │ 35              │ 0              │ 6009.0    │
 
-julia> path = matrix_paths(matrix, format="RB")
+julia> path = fetch_ssmc(matrix, format="RB")
 1-element Array{String,1}:
  "/Users/dpo/dev/JSO/SuiteSparseMatrixCollection.jl/src/../data/RB/HB/bcsstk01"
 
@@ -91,8 +92,6 @@ julia> A = RutherfordBoeingData(joinpath(path[1], "$(matrix.name[1]).rb"))
 Rutherford-Boeing data 23 of type rsa
 48 rows, 48 cols, 224 nonzeros
 ```
-
-Matrices in MAT format can be opened with [`MAT.jl`](https://github.com/JuliaIO/MAT.jl).
 
 Matrices in MM format can be opened with [`MatrixMarket.jl`](https://github.com/JuliaSparse/MatrixMarket.jl).
 
