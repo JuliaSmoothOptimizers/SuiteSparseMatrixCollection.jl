@@ -70,15 +70,17 @@ function fetch_ssmc(matrices; format="MM")
   for (matrix, g_path) in zip(eachrow(matrices), g_paths)
     ext = format == "mat" ? "mat" : "tar.gz"
     url = "$ssmc_url/$format/$(matrix.group)/$(matrix.name).$(ext)"
+    extfile = format == "mat" ? "mat" : (format == "RB" ? "rb" : "mtx")
     mkpath(g_path)
     fname = joinpath(g_path, "$(matrix.name).$(ext)")
-    if !isfile(fname)
+    fnamefile = format == "mat" ? joinpath(g_path, "$(matrix.name).$(extfile)") : joinpath(g_path, matrix.name, "$(matrix.name).$(extfile)")
+    if !isfile(fnamefile)
       @info "downloading $fname"
       download(url, fname)
-    end
-    if ext == "tar.gz"
-      run(`tar -zxf $fname -C $g_path`)
-      rm(fname)
+      if ext == "tar.gz"
+        run(`tar -zxf $fname -C $g_path`)
+        rm(fname)
+      end
     end
   end
 end
