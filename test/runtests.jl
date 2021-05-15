@@ -3,14 +3,14 @@ using SuiteSparseMatrixCollection
 using Test
 
 function test_fetch()
-  matrices = ssmc[(ssmc.numerical_symmetry .== 1)    .&
-                  (ssmc.positive_definite .== false) .&
-                  (ssmc.real .== true)               .&
-                  (ssmc.nrows .≤ 10), :]
+  matrices = ssmc[
+    (ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite .== false) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 10),
+    :,
+  ]
   @test size(matrices, 1) == 3
   for (group, name) ∈ zip(matrices.group, matrices.name)
     for format ∈ SuiteSparseMatrixCollection.ssmc_formats
-      path = fetch_ssmc(group, name, format=format)
+      path = fetch_ssmc(group, name, format = format)
       @test isdir(path)
       ext = format == "MM" ? "mtx" : "rb"
       @test isfile(joinpath(path, "$(name).$(ext)"))
@@ -38,7 +38,7 @@ function test_fetch_by_name()
   matrices = ssmc_matrices("Belcastro", "")
   for (group, name) ∈ zip(matrices.group, matrices.name)
     for format ∈ SuiteSparseMatrixCollection.ssmc_formats
-      path = fetch_ssmc(group, name, format=format)
+      path = fetch_ssmc(group, name, format = format)
       @test isdir(path)
       ext = format == "MM" ? "mtx" : "rb"
       @test isfile(joinpath(path, "$(name).$(ext)"))
