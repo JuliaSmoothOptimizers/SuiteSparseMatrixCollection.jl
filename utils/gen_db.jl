@@ -38,7 +38,7 @@ const colnames = Dict(
   "xmax" => "xmax",
   "isReal" => "real",
   "nblocks" => "nblocks",
- )
+)
 
 const coltypes = Dict(
   "group" => String,
@@ -71,7 +71,7 @@ const coltypes = Dict(
   "xmax" => Complex{Float64},
   "real" => Bool,
   "nblocks" => Int,
- )
+)
 
 const ssmc_url = "https://sparse.tamu.edu"
 const ssmc_mat = "ss_index.mat"
@@ -109,7 +109,7 @@ function to_vec(x, T)
   nd == 1 && (return x)
   y = T[]
   for val ∈ x
-      push!(y, val)
+    push!(y, val)
   end
   return y
 end

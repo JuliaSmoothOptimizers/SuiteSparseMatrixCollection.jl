@@ -29,11 +29,10 @@ const ssmc_formats = ("MM", "RB")
 Download the matrix with name `name` in group `group`.
 Return the path where the matrix is stored.
 """
-function fetch_ssmc(group::AbstractString, name::AbstractString; format="MM")
+function fetch_ssmc(group::AbstractString, name::AbstractString; format = "MM")
   group_and_name = group * "/" * name * "." * format
   # download lazy artifact if not already done and obtain path
-  loc = ensure_artifact_installed(group_and_name,
-                                  joinpath(@__DIR__, "..", "Artifacts.toml"))
+  loc = ensure_artifact_installed(group_and_name, joinpath(@__DIR__, "..", "Artifacts.toml"))
   return joinpath(loc, name)
 end
 
@@ -44,11 +43,11 @@ Download matrices from the SuiteSparseMatrixCollection.
 The argument `matrices` should be a `DataFrame` or `DataFrameRow`.
 An array of strings is returned with the paths where the matrices are stored.
 """
-function fetch_ssmc(matrices; format="MM")
+function fetch_ssmc(matrices; format = "MM")
   format ∈ ssmc_formats || error("unknown format $format")
   paths = String[]
   for (group, name) ∈ zip(matrices.group, matrices.name)
-    push!(paths, fetch_ssmc(group, name, format=format))
+    push!(paths, fetch_ssmc(group, name, format = format))
   end
   return paths
 end

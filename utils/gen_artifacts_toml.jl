@@ -23,11 +23,13 @@ for format ∈ formats
     url = "$ssmc_url/$format/$(matrix.group)/$(matrix.name).tar.gz"
     println("$k/$nmatrices: ", url)
     try
-      add_artifact!(artifacts_toml,
-                    "$(matrix.group)/$(matrix.name).$(format)",
-                    url,
-                    lazy=true,
-                    force=true)
+      add_artifact!(
+        artifacts_toml,
+        "$(matrix.group)/$(matrix.name).$(format)",
+        url,
+        lazy = true,
+        force = true,
+      )
     catch
       push!(fails, matrix.name)
     end
