@@ -13,4 +13,4 @@ makedocs(
   pages = ["Home" => "index.md", "Reference" => "reference.md"],
 )
 
-deploydocs(repo = "github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl.git")
+deploydocs(repo = "github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl.git", devbranch = "main")
