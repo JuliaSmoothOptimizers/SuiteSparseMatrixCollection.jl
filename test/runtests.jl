@@ -2,7 +2,7 @@ using SuiteSparseMatrixCollection
 
 using Test
 
-function test_fetch()
+@testset "fetch test" begin
   matrices = ssmc[
     (ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite .== false) .& (ssmc.real .== true) .& (ssmc.nrows .≤ 10),
     :,
@@ -18,7 +18,7 @@ function test_fetch()
   end
 end
 
-function test_select()
+@testset "select test" begin
   bcsstk = ssmc_matrices("bcsstk")
   @test size(bcsstk, 1) == 40
 
@@ -32,7 +32,7 @@ function test_select()
   @test size(hb_matrices, 1) == 292
 end
 
-function test_fetch_by_name()
+@testset "fetch by name test" begin
   subset = ssmc_matrices("Belcastro", "")
   @test size(subset, 1) == 3
   matrices = ssmc_matrices("Belcastro", "")
@@ -46,6 +46,3 @@ function test_fetch_by_name()
   end
 end
 
-test_fetch()
-test_select()
-test_fetch_by_name()
