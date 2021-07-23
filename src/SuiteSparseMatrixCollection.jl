@@ -5,19 +5,17 @@ using Pkg.Artifacts
 using DataFrames
 using JLD2
 
-export fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats
+export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats
 
 const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
 
-"Main database."
-global ssmc
-
-function __init__()
+function ssmc_db()
   file = jldopen(ssmc_jld2, "r")
-  global ssmc = file["df"]
+  ssmc = file["df"]
   last_rev_date = file["last_rev_date"]
   close(file)
   @info "loaded database with revision date" last_rev_date
+  return ssmc
 end
 
 "Formats in which matrices are available."
@@ -53,26 +51,26 @@ function fetch_ssmc(matrices; format = "MM")
 end
 
 """
-    ssmc_matrices(group, name)
+    ssmc_matrices(ssmc, group, name)
 
 Return a `DataFrame` of matrices whose group contains the string `group` and whose
 name contains the string `name`.
 
-    ssmc_matrices(name)
-    ssmc_matrices("", name)
+    ssmc_matrices(ssmc name)
+    ssmc_matrices(ssmc, "", name)
 
 Return a `DataFrame` of matrices whose name contains the string `name`.
 
-    ssmc_matrices(group, "")
+    ssmc_matrices(ssmc, group, "")
 
 Return a `DataFrame` of matrices whose group contains the string `group`.
 
-Example: `ssmc_matrices("HB", "bcsstk")`.
+Example: `ssmc_matrices(ssmc, "HB", "bcsstk")`.
 """
-function ssmc_matrices(group::AbstractString, name::AbstractString)
+function ssmc_matrices(ssmc::DataFrame, group::AbstractString, name::AbstractString)
   ssmc[occursin.(group, ssmc.group) .& occursin.(name, ssmc.name), :]
 end
 
-ssmc_matrices(name::AbstractString) = ssmc_matrices("", name)
+ssmc_matrices(ssmc::DataFrame, name::AbstractString) = ssmc_matrices(ssmc, "", name)
 
 end
