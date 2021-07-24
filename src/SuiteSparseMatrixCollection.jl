@@ -80,7 +80,6 @@ ssmc_matrices(ssmc::DataFrame, name::AbstractString) = ssmc_matrices(ssmc, "", n
 Remove the matrix with name `name` in group `group`.
 """
 function delete_ssmc(group::AbstractString, name::AbstractString; format = "MM")
-
   artifact_name = group * "/" * name * "." * format
 
   meta = artifact_meta(artifact_name, ssmc_artifacts)
@@ -101,8 +100,7 @@ end
 Remove all matrices from the SuiteSparseMatrixCollection.
 """
 function delete_all_ssmc()
-
-  hashes = Artifacts.extract_all_hashes(ssmc_artifacts, include_lazy=true)
+  hashes = Artifacts.extract_all_hashes(ssmc_artifacts, include_lazy = true)
   for hash in hashes
     remove_artifact(hash)
   end

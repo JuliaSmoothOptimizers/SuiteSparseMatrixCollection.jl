@@ -50,11 +50,11 @@ end
 end
 
 @testset "delete test" begin
-  path = fetch_ssmc("HB", "1138_bus", format="MM")
-  delete_ssmc("HB", "1138_bus", format="MM")
+  path = fetch_ssmc("HB", "1138_bus", format = "MM")
+  delete_ssmc("HB", "1138_bus", format = "MM")
   @test !isdir(path)
-  path = fetch_ssmc("HB", "illc1033", format="RB")
-  delete_ssmc("HB", "illc1033", format="RB")
+  path = fetch_ssmc("HB", "illc1033", format = "RB")
+  delete_ssmc("HB", "illc1033", format = "RB")
   @test !isdir(path)
   delete_all_ssmc()
 end
