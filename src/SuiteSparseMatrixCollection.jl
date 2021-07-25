@@ -77,26 +77,27 @@ ssmc_matrices(ssmc::DataFrame, name::AbstractString) = ssmc_matrices(ssmc, "", n
 """
     installed_ssmc()
 
-Return a vector of strings `group/name.format` of all installed matrices from the SuiteSparseMatrixCollection.
+Return a vector of tuples `(group, name, format)` of all installed matrices from the SuiteSparseMatrixCollection.
 """
 function installed_ssmc()
   database = Artifacts.select_downloadable_artifacts(ssmc_artifacts, include_lazy = true)
-  installed_artifacts = String[]
+  installed_matrices = Tuple{String, String, String}[]
   for artifact_name in keys(database)
     hash = Base.SHA1(database[artifact_name]["git-tree-sha1"])
     if artifact_exists(hash)
-      push!(installed_artifacts, artifact_name)
+      matrix = tuple(split(artifact_name, ['/', '.'])...)
+      push!(installed_matrices, matrix)
     end
   end
-  return installed_artifacts
+  return installed_matrices
 end
 
 """
-    delete_ssmc(name::AbstractString, group::AbstractString; format = "MM")
+    delete_ssmc(name::AbstractString, group::AbstractString, format = "MM")
 
-Remove the matrix with name `name` in group `group`.
+Remove the matrix with name `name` in group `group` and format `format`.
 """
-function delete_ssmc(group::AbstractString, name::AbstractString; format = "MM")
+function delete_ssmc(group::AbstractString, name::AbstractString, format = "MM")
   artifact_name = group * "/" * name * "." * format
 
   meta = artifact_meta(artifact_name, ssmc_artifacts)
