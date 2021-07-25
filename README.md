@@ -54,7 +54,10 @@ julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.==
                    (ssmc.real .== true) .& (ssmc.nrows .≤ 100), :]
 
 julia> # fetch the matrices selects in MatrixMarket format
-julia> paths = fetch_ssmc(tiny, format="MM")  # matrices are downloaded in paths
+julia> paths = fetch_ssmc(tiny, format="MM")   # matrices are downloaded in paths
+julia> downloaded_matrices = installed_ssmc()  # name of all downloaded matrices
+julia> delete_ssmc("HB", "bcsstk02")           # delete the matrix "bcsstk02" of group "HB"
+julia> delete_all_ssmc()                       # delete all matrices from the SuiteSparseMatrixCollection
 ```
 
 Matrices are available in formats:
