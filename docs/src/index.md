@@ -15,9 +15,10 @@ pkg> test SuiteSparseMatrixCollection
 julia> using SuiteSparseMatrixCollection  # the database is named ssmc
 
 julia> # name-based selection can be done with `ssmc_matrices()`
-julia> ssmc_matrices("HB", "bcsstk")  # all matrices whose group contains "HB" and name contains "bcsstk"
-julia> ssmc_matrices("", "bcsstk")    # all matrices whose name contains "bcsstk"
-julia> ssmc_matrices("HB", "")        # all matrices whose group contains "HB"
+julia> ssmc = ssmc_db()
+julia> ssmc_matrices(ssmc, "HB", "bcsstk")  # all matrices whose group contains "HB" and name contains "bcsstk"
+julia> ssmc_matrices(ssmc, "", "bcsstk")    # all matrices whose name contains "bcsstk"
+julia> ssmc_matrices(ssmc, "HB", "")        # all matrices whose group contains "HB"
 
 julia> # select symmetric positive definite matrices with ≤ 100 rows and columns
 julia> tiny = ssmc[(ssmc.numerical_symmetry .== 1) .& (ssmc.positive_definite.== true) .&
