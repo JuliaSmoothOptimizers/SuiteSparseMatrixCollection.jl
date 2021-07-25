@@ -1,10 +1,21 @@
 # SuiteSparseMatrixCollection.jl
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4324340.svg)](https://doi.org/10.5281/zenodo.4324340)
-[![CI](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/workflows/CI/badge.svg?branch=main)](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/actions)
-[![Build Status](https://api.cirrus-ci.com/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl.svg)](https://cirrus-ci.com/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl)
-[![documentation](https://img.shields.io/badge/docs-latest-3f51b5.svg)](https://JuliaSmoothOptimizers.github.io/SuiteSparseMatrixCollection.jl/latest)
-[![codecov](https://codecov.io/gh/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/SuiteSparseMatrixCollection.jl)
+| **Documentation** | **Linux/macOS/Windows/FreeBSD** | **Coverage** | **DOI** |
+|:-----------------:|:-------------------------------:|:------------:|:-------:|
+| [![docs-stable][docs-stable-img]][docs-stable-url] [![docs-dev][docs-dev-img]][docs-dev-url] | [![build-gh][build-gh-img]][build-gh-url] [![build-cirrus][build-cirrus-img]][build-cirrus-url] | [![codecov][codecov-img]][codecov-url] | [![doi][doi-img]][doi-url] |
+
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://JuliaSmoothOptimizers.github.io/SuiteSparseMatrixCollection.jl/stable
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-purple.svg
+[docs-dev-url]: https://JuliaSmoothOptimizers.github.io/SuiteSparseMatrixCollection.jl/dev
+[build-gh-img]: https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/workflows/CI/badge.svg?branch=main
+[build-gh-url]: https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/actions
+[build-cirrus-img]: https://img.shields.io/cirrus/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl?logo=Cirrus%20CI
+[build-cirrus-url]: https://cirrus-ci.com/github/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl
+[codecov-img]: https://codecov.io/gh/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/branch/main/graph/badge.svg
+[codecov-url]: https://app.codecov.io/gh/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl
+[doi-img]: https://img.shields.io/badge/DOI-10.5281%2Fzenodo.4324340-blue.svg
+[doi-url]: https://doi.org/10.5281/zenodo.4324340
 
 A straightforward interface to the [SuiteSparse Matrix Collection](https://sparse.tamu.edu/).
 
