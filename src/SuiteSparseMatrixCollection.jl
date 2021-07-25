@@ -5,7 +5,7 @@ using Pkg.Artifacts
 using DataFrames
 using JLD2
 
-export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats, delete_ssmc, delete_all_ssmc
+export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats, installed_ssmc, delete_ssmc, delete_all_ssmc
 
 const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
 const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml")
@@ -73,6 +73,23 @@ function ssmc_matrices(ssmc::DataFrame, group::AbstractString, name::AbstractStr
 end
 
 ssmc_matrices(ssmc::DataFrame, name::AbstractString) = ssmc_matrices(ssmc, "", name)
+
+"""
+    installed_ssmc()
+
+Return a vector of strings `group/name.format` of all installed matrices from the SuiteSparseMatrixCollection.
+"""
+function installed_ssmc()
+  database = Artifacts.select_downloadable_artifacts(ssmc_artifacts, include_lazy = true)
+  installed_artifacts = String[]
+  for artifact_name in keys(database)
+    hash = Base.SHA1(database[artifact_name]["git-tree-sha1"])
+    if artifact_exists(hash)
+      push!(installed_artifacts, artifact_name)
+    end
+  end
+  return installed_artifacts
+end
 
 """
     delete_ssmc(name::AbstractString, group::AbstractString; format = "MM")

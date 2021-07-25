@@ -49,6 +49,14 @@ end
   end
 end
 
+@testset "installed test" begin
+  downloaded_matrices = installed_ssmc()
+  @test downloaded_matrices == ["Pajek/Stranke94.RB", "Belcastro/human_gene2.MM", "Mycielski/mycielskian2.RB",
+                                "Mycielski/mycielskian2.MM", "Pajek/Stranke94.MM", "Mycielski/mycielskian3.MM",
+                                "Mycielski/mycielskian3.RB", "Belcastro/human_gene2.RB", "Belcastro/mouse_gene.RB",
+                                "Belcastro/mouse_gene.MM", "Belcastro/human_gene1.MM", "Belcastro/human_gene1.RB"]
+end
+
 @testset "delete test" begin
   path = fetch_ssmc("HB", "1138_bus", format = "MM")
   delete_ssmc("HB", "1138_bus", format = "MM")
@@ -57,4 +65,5 @@ end
   delete_ssmc("HB", "illc1033", format = "RB")
   @test !isdir(path)
   delete_all_ssmc()
+  @test installed_ssmc() == String[]
 end
