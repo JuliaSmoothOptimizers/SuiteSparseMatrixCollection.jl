@@ -51,10 +51,20 @@ end
 
 @testset "installed test" begin
   downloaded_matrices = installed_ssmc()
-  for matrix ∈ [("Pajek","Stranke94","RB"), ("Belcastro","human_gene2","MM"), ("Mycielski","mycielskian2","RB"),
-                ("Mycielski","mycielskian2","MM"), ("Pajek","Stranke94","MM"), ("Mycielski","mycielskian3","MM"),
-                ("Mycielski","mycielskian3","RB"), ("Belcastro","human_gene2","RB"), ("Belcastro","mouse_gene","RB"),
-                ("Belcastro","mouse_gene","MM"), ("Belcastro","human_gene1","MM"), ("Belcastro","human_gene1","RB")]
+  for matrix ∈ [
+    ("Pajek", "Stranke94", "RB"),
+    ("Belcastro", "human_gene2", "MM"),
+    ("Mycielski", "mycielskian2", "RB"),
+    ("Mycielski", "mycielskian2", "MM"),
+    ("Pajek", "Stranke94", "MM"),
+    ("Mycielski", "mycielskian3", "MM"),
+    ("Mycielski", "mycielskian3", "RB"),
+    ("Belcastro", "human_gene2", "RB"),
+    ("Belcastro", "mouse_gene", "RB"),
+    ("Belcastro", "mouse_gene", "MM"),
+    ("Belcastro", "human_gene1", "MM"),
+    ("Belcastro", "human_gene1", "RB"),
+  ]
     @test matrix ∈ downloaded_matrices
   end
 end
