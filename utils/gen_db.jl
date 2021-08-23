@@ -31,7 +31,7 @@ const colnames = Dict(
   "rcm_lowerbandwidth" => "rcm_lower_bandwidth",
   "amd_lnz" => "amd_lnz",
   "nnz" => "nnz",
-  "pattern_symmetry" => "pattern_symmety",
+  "pattern_symmetry" => "pattern_symmetry",
   "rcm_upperbandwidth" => "rcm_upper_bandwidth",
   "upperbandwidth" => "upper_bandwidth",
   "cholcand" => "cholesky_candidate",
@@ -64,7 +64,7 @@ const coltypes = Dict(
   "rcm_lower_bandwidth" => Int,
   "amd_lnz" => Int,
   "nnz" => Int,
-  "pattern_symmety" => Float64,
+  "pattern_symmetry" => Float64,
   "rcm_upper_bandwidth" => Int,
   "upper_bandwidth" => Int,
   "cholesky_candidate" => Bool,
@@ -101,6 +101,8 @@ if isfile(ssmc_jld2)
   close(file)
   last_rev_on_file = DateTime(last_rev_date_on_file, dfmt)
   update = last_rev > last_rev_on_file
+else
+  update = true
 end
 
 function to_vec(x, T)
@@ -122,6 +124,11 @@ if update
     colname = colnames[k]
     setproperty!(df, colname, to_vec(v, coltypes[colname]))
   end
+  df = df[!, [:group, :name, :nrows, :ncols, :nnz, :structural_rank, :numerical_symmetry,
+              :positive_definite, :pattern_symmetry, :binary, :real, :nnzdiag, :xmin, :xmax,
+              :lower_bandwidth, :upper_bandwidth, :rcm_lower_bandwidth, :rcm_upper_bandwidth,
+              :amd_vnz, :amd_lnz, :amd_rnz, :explicit_zeros, :pattern_entries, :cholesky_candidate,
+              :connected_components, :nblocks, :amd_flops, :RB_type, :is_graph, :is_nd]]
 
   jldopen(ssmc_jld2, "w") do file
     file["df"] = df
