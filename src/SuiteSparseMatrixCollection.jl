@@ -5,12 +5,17 @@ using Pkg.Artifacts
 using DataFrames
 using JLD2
 
-export ssmc_db,
-  fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats, installed_ssmc, delete_ssmc, delete_all_ssmc
+export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc, ssmc_formats, installed_ssmc, delete_ssmc, delete_all_ssmc
 
 const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
 const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml")
 
+"""
+    ssmc_db()
+
+Load the database of the SuiteSparseMatrixCollection.
+A summary of the statistics available for each matrix can be found at https://www.cise.ufl.edu/research/sparse/matrices/stats.html.
+"""
 function ssmc_db()
   file = jldopen(ssmc_jld2, "r")
   ssmc = file["df"]

@@ -2,4 +2,5 @@ test/example/latex_example.*
 test/example/profile*
 data/*
 docs/build
-docs/Manifest.toml
+**/Manifest.toml
+utils/ss_index.mat
