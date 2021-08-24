@@ -124,11 +124,41 @@ if update
     colname = colnames[k]
     setproperty!(df, colname, to_vec(v, coltypes[colname]))
   end
-  df = df[!, [:group, :name, :nrows, :ncols, :nnz, :structural_rank, :numerical_symmetry,
-              :positive_definite, :pattern_symmetry, :binary, :real, :nnzdiag, :xmin, :xmax,
-              :lower_bandwidth, :upper_bandwidth, :rcm_lower_bandwidth, :rcm_upper_bandwidth,
-              :amd_vnz, :amd_lnz, :amd_rnz, :explicit_zeros, :pattern_entries, :cholesky_candidate,
-              :connected_components, :nblocks, :amd_flops, :RB_type, :is_graph, :is_nd]]
+  df = df[
+    !,
+    [
+      :group,
+      :name,
+      :nrows,
+      :ncols,
+      :nnz,
+      :structural_rank,
+      :numerical_symmetry,
+      :positive_definite,
+      :pattern_symmetry,
+      :binary,
+      :real,
+      :nnzdiag,
+      :xmin,
+      :xmax,
+      :lower_bandwidth,
+      :upper_bandwidth,
+      :rcm_lower_bandwidth,
+      :rcm_upper_bandwidth,
+      :amd_vnz,
+      :amd_lnz,
+      :amd_rnz,
+      :explicit_zeros,
+      :pattern_entries,
+      :cholesky_candidate,
+      :connected_components,
+      :nblocks,
+      :amd_flops,
+      :RB_type,
+      :is_graph,
+      :is_nd,
+    ],
+  ]
 
   jldopen(ssmc_jld2, "w") do file
     file["df"] = df
