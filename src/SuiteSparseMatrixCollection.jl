@@ -12,12 +12,12 @@ const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
 const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml")
 
 """
-    ssmc_db(; verbose::Bool=false)
+    ssmc_db(; verbose::Bool=true)
 
 Load the database of the SuiteSparseMatrixCollection.
 A summary of the statistics available for each matrix can be found at https://www.cise.ufl.edu/research/sparse/matrices/stats.html.
 """
-function ssmc_db(; verbose::Bool=false)
+function ssmc_db(; verbose::Bool=true)
   file = jldopen(ssmc_jld2, "r")
   ssmc = file["df"]
   last_rev_date = file["last_rev_date"]
