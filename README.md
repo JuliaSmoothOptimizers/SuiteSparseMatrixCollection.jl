@@ -19,6 +19,13 @@
 
 A straightforward interface to the [SuiteSparse Matrix Collection](https://sparse.tamu.edu/).
 
+## References
+
+> Davis, Timothy A. and Hu, Yifan (2011).
+> The University of Florida sparse matrix collection.
+> ACM Transactions on Mathematical Software, 38(1), 1--25.
+> [10.1145/2049662.2049663](https://doi.org/10.1145/2049662.2049663)
+
 ## How to Cite
 
 If you use SuiteSparseMatrixCollection.jl in your work, please cite using the format given in [CITATION.bib](https://github.com/JuliaSmoothOptimizers/SuiteSparseMatrixCollection.jl/blob/main/CITATION.bib).
