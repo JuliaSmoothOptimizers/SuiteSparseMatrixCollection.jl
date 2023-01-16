@@ -14,4 +14,4 @@ jobs:
         with:
           version: '1'
       - name: Aqua.jl
-        run: julia --color=yes -e 'using Pkg; Pkg.add("Aqua"); Pkg.develop(path="."); using Aqua, SuiteSparseMatrixCollection; Aqua.test_all(SuiteSparseMatrixCollection)'
+        run: julia --color=yes -e 'using Pkg; Pkg.add("Aqua"); Pkg.develop(path="."); using Aqua, SuiteSparseMatrixCollection; Aqua.test_all(SuiteSparseMatrixCollection, ambiguities=false); Aqua.test_ambiguities(SuiteSparseMatrixCollection)'
