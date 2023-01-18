@@ -5,10 +5,9 @@ makedocs(
   doctest = true,
   linkcheck = true,
   strict = true,
-  format = Documenter.HTML(
-    assets = ["assets/style.css"],
-    prettyurls = get(ENV, "CI", nothing) == "true",
-  ),
+  format = Documenter.HTML(assets = ["assets/style.css"],
+                           prettyurls = get(ENV, "CI", nothing) == "true",
+                           ansicolor = true),
   sitename = "SuiteSparseMatrixCollection.jl",
   pages = ["Home" => "index.md", "Reference" => "reference.md"],
 )
