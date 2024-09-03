@@ -33,7 +33,9 @@ function delete_ssmc(group::AbstractString, name::AbstractString, format = "MM")
   else
     ssmc_nbytes = artifact_path(hash) |> totalsize
     remove_artifact(hash)
-    println("The artifact $(artifact_name) has been deleted, freeing up $(ssmc_nbytes |> format_bytes).")
+    println(
+      "The artifact $(artifact_name) has been deleted, freeing up $(ssmc_nbytes |> format_bytes).",
+    )
   end
 end
 
@@ -52,9 +54,13 @@ function delete_all_ssmc()
     end
   end
   if ssmc_nbytes == 0
-    println("No matrices to remove. All SSMC matrices from the SuiteSparseMatrixCollection have already been cleared.")
+    println(
+      "No matrices to remove. All SSMC matrices from the SuiteSparseMatrixCollection have already been cleared.",
+    )
   else
-    println("All matrices from the SuiteSparseMatrixCollection have been deleted for a total of $(ssmc_nbytes |> format_bytes).")
+    println(
+      "All matrices from the SuiteSparseMatrixCollection have been deleted for a total of $(ssmc_nbytes |> format_bytes).",
+    )
   end
 end
 
@@ -84,7 +90,9 @@ function manage_ssmc(; sort_by::Symbol = :name, rev::Bool = false)
   end
 
   if isempty(ssmc_matrices)
-    println("No matrices to remove. All SSMC matrices from the SuiteSparseMatrixCollection have already been cleared.")
+    println(
+      "No matrices to remove. All SSMC matrices from the SuiteSparseMatrixCollection have already been cleared.",
+    )
   else
     # Sort ssmc_problems and ssmc_sizes
     if sort_by === :name
@@ -142,7 +150,7 @@ end
 # Return total size on a disk of a file or directory
 function totalsize(path::String)
   if !isdir(path)
-      return filesize(path)
+    return filesize(path)
   end
 
   total = 0
