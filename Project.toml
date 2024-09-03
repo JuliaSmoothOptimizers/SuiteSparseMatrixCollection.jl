@@ -1,6 +1,6 @@
 name = "SuiteSparseMatrixCollection"
 uuid = "ac199af8-68bc-55b8-82c4-7abd6f96ed98"
-version = "0.5.5"
+version = "0.5.6"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
