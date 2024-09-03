@@ -4,12 +4,15 @@ using Pkg.Artifacts
 
 using DataFrames
 using JLD2
+import REPL.TerminalMenus
+import Base.format_bytes, Base.SHA1
+import Printf.@sprintf
 
-export ssmc_db,
-  fetch_ssmc, ssmc_matrices, ssmc_formats, installed_ssmc, delete_ssmc, delete_all_ssmc
+export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc_formats, installed_ssmc
+export delete_ssmc, delete_all_ssmc, manage_ssmc
 
-const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2")
-const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml")
+const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2") |> normpath
+const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml") |> normpath
 
 "Formats in which matrices are available."
 const ssmc_formats = ("MM", "RB")
