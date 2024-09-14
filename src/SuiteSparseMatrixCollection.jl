@@ -11,7 +11,7 @@ import Printf.@sprintf
 export ssmc_db, fetch_ssmc, ssmc_matrices, ssmc_formats, installed_ssmc
 export delete_ssmc, delete_all_ssmc, manage_ssmc
 
-const ssmc_jld2 = joinpath(@__DIR__, "..", "src", "ssmc.jld2") |> normpath
+const ssmc_jld2 = joinpath(@__DIR__, "ssmc.jld2")
 const ssmc_artifacts = joinpath(@__DIR__, "..", "Artifacts.toml") |> normpath
 
 "Formats in which matrices are available."
