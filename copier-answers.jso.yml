@@ -1,0 +1,8 @@
+PackageName: "SuiteSparseMatrixCollection"
+PackageOwner: "JuliaSmoothOptimizers"
+PackageUUID: "ac199af8-68bc-55b8-82c4-7abd6f96ed98"
+_src_path: "https://github.com/JuliaSmoothOptimizers/JSOBestieTemplate.jl"
+_commit: "v0.13.0"
+AddBreakage: true
+AddBenchmark: false
+AddBenchmarkCI: true
