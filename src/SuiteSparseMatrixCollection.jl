@@ -1,6 +1,6 @@
 module SuiteSparseMatrixCollection
 
-using Pkg.Artifacts
+using Artifacts
 
 using DataFrames
 using JLD2
